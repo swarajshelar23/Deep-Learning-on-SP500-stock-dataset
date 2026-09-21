@@ -8,13 +8,14 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+import tensorflow as tf   # add near the top
 
 from features import add_features
 
 
 EXPECTED_RAW_ROWS = 619_040
 EXPECTED_TICKERS = 505
-EXPECTED_DAYS = 1_258
+EXPECTED_DAYS = 1_259   # was 1_258 — that number is the post-labelling count, not the raw one
 EXPECTED_START = "2013-02-08"
 EXPECTED_END = "2018-02-07"
 EXPECTED_MISSING_TOTAL = 27
@@ -269,7 +270,7 @@ def prepare_data(
     )
 
 
-class WindowSequence:
+class WindowSequence(tf.keras.utils.Sequence):
     """Memory-efficient 30-day per-ticker window sequence.
 
     Windows are generated only inside a single split, so no window can cross
